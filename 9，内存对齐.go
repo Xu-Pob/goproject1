@@ -26,6 +26,7 @@ func main() {
 	fmt.Printf("int32 size:%d align:%d\n", unsafe.Sizeof(int32(0)), unsafe.Alignof(int32(0)))
 	fmt.Printf("string size:%d align:%d\n", unsafe.Sizeof("1111"), unsafe.Alignof("1111"))
 	fmt.Printf("[]int32 size:%d align:%d\n", unsafe.Sizeof([]int32{}), unsafe.Alignof([]int32{}))
+	fmt.Printf("User size:%d align:%d\n", unsafe.Sizeof(User{}), unsafe.Alignof(User{}))
 }
 
 type S1 struct {
@@ -37,7 +38,7 @@ type S2 struct {
 	num2 int32
 }
 
-// User 给出size 和 align大小 ？    4
+// User 给出size 和 align大小 ？    4,24,16,1       8
 type User struct {
 	A int32
 	B []int32

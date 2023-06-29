@@ -24,6 +24,15 @@ import (
 //						      3,gogo()
 //						      4,业务方法
 //							  5,goexit()
+
+// 二， g-m-p調度模型
+// 1，本地隊列     p结构体     作用： a, 是m与g的中介（送料器）;b,p持有一些G，使得获取g的时候不用全局找；c,大大减少并发冲突
+//
+//			a,m    uintptr (int类型的指针，原始指针服务于线程)
+//		    b,runqhead  队列协程中的头
+//		    c,runqtail  队列协程中的尾
+//	        d,runq    协程结构体
+//	        e,runnext  下一个可以用的指针
 func main() {
 	go go1()
 	fmt.Println(time.Hour)

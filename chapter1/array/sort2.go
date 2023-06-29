@@ -12,7 +12,7 @@ func main() {
 	sort.Sort(sort.Reverse(sort.IntSlice(a)))
 	fmt.Println("排序后", a)
 
-	b := [][]int{{1, 2, 3}, {1, 1, 1}, {54, 23, 2}, {1, 12, 12}}
+	b := [][]int{{1, 2, 3}, {1, 13, 1}, {54, 23, 2}, {1, 12}}
 
 	//二维数组排序
 	result := arrayLib.ArraySort(b, 2-1)

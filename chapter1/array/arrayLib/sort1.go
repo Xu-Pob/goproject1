@@ -34,7 +34,7 @@ func (arr IntArray) Swap(i, j int) {
 
 func (arr IntArray) Less(i, j int) bool {
 	arr1 := arr.mArr[i]
-	arr2 := arr.mArr[i]
+	arr2 := arr.mArr[j]
 	for index := arr.firstIndex; index < len(arr1); index++ {
 		if arr1[index] < arr2[index] {
 			return true

@@ -9,9 +9,9 @@ func main() {
 	//defer func2()
 	//defer func3()
 
-	println(DeferFunc1(1))
+	//println(DeferFunc1(1))
 
-	//deferPanic3()
+	deferPanic3()
 
 	//defer function(1, function(3, 0))
 	//defer function(2, function(4, 0))

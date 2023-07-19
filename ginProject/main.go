@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Xu-Pob/goproject1/ginProject/router"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"path/filepath"
@@ -108,18 +109,19 @@ func main() {
 		}
 	})
 
-	//路由分组
-	apiRouter := r.Group("/api")
-	{
-		apiRouter.GET("/", func(ctx *gin.Context) {
-			ctx.String(200, "api")
-		})
-
-		apiRouter.GET("articles", func(ctx *gin.Context) {
-			ctx.String(200, "/api/articles")
-		})
-	}
-
+	//路由分组 分离
+	//apiRouter := r.Group("/api")
+	//{
+	//	apiRouter.GET("/", func(ctx *gin.Context) {
+	//		ctx.String(200, "api")
+	//	})
+	//
+	//	apiRouter.GET("articles", func(ctx *gin.Context) {
+	//		ctx.String(200, "/api/articles")
+	//	})
+	//}
+	router.AdminRouter(r)
+	router.ApiRounter(r)
 	r.Run(":8080")
 
 }

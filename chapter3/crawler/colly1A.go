@@ -1,4 +1,4 @@
-package main
+package crawler
 
 //go get -u /gocolly/colly/v2
 

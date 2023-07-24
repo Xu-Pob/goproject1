@@ -8,6 +8,7 @@ import (
 )
 
 // https://gin-gonic.com/docs/ 官方文档
+// 参考文档： https://blog.csdn.net/book_longker/article/details/123760632
 func main() {
 	r := gin.Default()
 	//模式匹配
@@ -110,18 +111,13 @@ func main() {
 	})
 
 	//路由分组 分离
-	//apiRouter := r.Group("/api")
-	//{
-	//	apiRouter.GET("/", func(ctx *gin.Context) {
-	//		ctx.String(200, "api")
-	//	})
-	//
-	//	apiRouter.GET("articles", func(ctx *gin.Context) {
-	//		ctx.String(200, "/api/articles")
-	//	})
-	//}
-	router.AdminRouter(r)
 	router.ApiRounter(r)
+	//路由中间件
+	router.AdminRouter(r)
+	//全局中间件  r.use
+	//路由分组配置中间件  中间件的数据共享   cookie
+	router.GlobalRouter(r)
+
 	r.Run(":8080")
 
 }

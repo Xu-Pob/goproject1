@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 //	func Log(msg string, err error) {
@@ -13,27 +14,29 @@ import (
 //	}
 func main() {
 	//拨号
-	conn, err := net.Dial("tcp", "127.0.0.1:8008")
+	conn, err := net.DialUDP("udp", nil, &net.UDPAddr{
+		IP:   net.ParseIP("127.0.0.1"),
+		Port: 8888,
+	})
 	if err != nil {
-		Log("拨号失败", err)
+		fmt.Println("拨号失败：", err)
 	}
 	defer conn.Close()
 	for {
 		//发送数据
 		//读取输入行
 		reader := bufio.NewReader(os.Stdin)
-		readString, err := reader.ReadString('\n')
-		if err != nil {
-			Log("读取输入数据失败", err)
+		readString, _ := reader.ReadString('\n')
+		if strings.ToUpper(readString) == "Q" {
+			fmt.Println("退出聊天系统～")
+			return
 		}
 		conn.Write([]byte(readString))
 
 		//读取数据，并显示
 		var buf [1024]byte
-		n, err := conn.Read(buf[:])
-		if err != nil {
-			Log("读取监听数据失败", err)
-		}
+		n, _, _ := conn.ReadFromUDP(buf[:])
+
 		fmt.Printf("%v说:%v", conn.RemoteAddr(), string(buf[:n]))
 	}
 

@@ -4,19 +4,25 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/denisenkom/go-mssqldb"
+	"log"
 )
 
 func main() {
-	//db, err := sql.Open("mysql", "user:password@tcp(127.0.0.1:3306)/hello")
 	conn := fmt.Sprintf("server=%s;port=%d;database=%s;user id=%s;password=%s", ".", 1433, "GoDb", "sa", "1234.com")
 	db, err := sql.Open("mssql", conn)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
-	//通常用于长时间判断后看连接是否是OK 的（由于超时、断开连接或者其他原因）
-	err = db.Ping()
+	var name string
+
+	err = db.QueryRow("SELECT id,username from GoDb.dbo.users where id =?", 4).Scan(&name)
 	if err != nil {
-		//错误处理逻辑
+		if err == sql.ErrNoRows {
+			//结果没有行
+			log.Println("mei有hang")
+		} else {
+			log.Fatal(err)
+		}
 	}
-	defer db.Close()
+	fmt.Println(name)
 }

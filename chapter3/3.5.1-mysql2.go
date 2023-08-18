@@ -37,11 +37,13 @@ func main() {
 		log.Print(err)
 		log.Printf("ERR:%v", err)
 		log.Fatal(err)
+
 	}
 	defer rows.Close()
 	for rows.Next() {
 		//通过scan方法赋值
 		err := rows.Scan(&id, &username)
+		//strconv.ParseInt()  字符转类型
 		if err != nil {
 			log.Fatal(err)
 		}

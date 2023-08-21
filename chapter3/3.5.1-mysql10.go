@@ -13,16 +13,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var name string
 
-	err = db.QueryRow("SELECT username from GoDb.dbo.users where id =?", 0).Scan(&name)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			//结果没有行
-			log.Println("mei有hang")
-		} else {
-			log.Fatal(err)
-		}
-	}
-	fmt.Println(name)
 }

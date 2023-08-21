@@ -13,16 +13,19 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var name string
 
-	err = db.QueryRow("SELECT username from GoDb.dbo.users where id =?", 0).Scan(&name)
+	stat, err := db.Prepare(`UPDATE users set UserName = ? where id=?`)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			//结果没有行
-			log.Println("mei有hang")
-		} else {
-			log.Fatal(err)
-		}
+		log.Fatal(err)
 	}
-	fmt.Println(name)
+	ret, err := stat.Exec("赵六", 3)
+	if err != nil {
+		log.Fatal(err)
+	}
+	rowsAffected, err := ret.RowsAffected()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("insert success, the id is %d.\n", rowsAffected)
 }

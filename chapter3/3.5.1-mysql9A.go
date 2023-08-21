@@ -13,16 +13,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var name string
 
-	err = db.QueryRow("SELECT username from GoDb.dbo.users where id =?", 0).Scan(&name)
+	ret, err := db.Exec(`insert into GoDb.dbo.users(username)values(?)`, "王五")
 	if err != nil {
-		if err == sql.ErrNoRows {
-			//结果没有行
-			log.Println("mei有hang")
-		} else {
-			log.Fatal(err)
-		}
+		log.Fatal(err)
 	}
-	fmt.Println(name)
+	//应该是sqlserver不能用，mysql可能可以
+	addID, err := ret.RowsAffected()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("insert success, the id is %d.\n", addID)
 }

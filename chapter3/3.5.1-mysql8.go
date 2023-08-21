@@ -14,8 +14,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	//var wg sync.WaitGroup
+	//wg.Add(1)
+
 	go func(db *sql.DB) {
-		mt := time.NewTicker(10 * time.Second)
+		//defer wg.Done()
+		mt := time.NewTicker(1 * time.Second)
 		for {
 			select {
 			case <-mt.C:
@@ -45,11 +50,12 @@ func main() {
 	for rows.Next() {
 		var s sql.NullString
 		err = rows.Scan(&s)
+		//避免null可以sql用COALESCE(字段,'')处理
 		if s.Valid {
 			fmt.Println(s.String)
 		} else {
 			//NULL值
 		}
 	}
-
+	//wg.Wait()
 }

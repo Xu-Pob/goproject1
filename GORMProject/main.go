@@ -83,7 +83,7 @@ func main() {
 	//	CreateBatchSize: 1000,
 	//})
 
-	Query(db)
+	QueryWhere(db)
 
 	// 想要修改该值，您可以使用 `Update`
 	//db.First(&user2, "Name =?", "jinzhu1")
@@ -98,11 +98,50 @@ func Query(db *gorm.DB) {
 	//	"name": "Jinzhu",
 	//}).First(&user)
 
+	//db.Model(&GORMUser{}).First(&user)
+
+	//First和last不工作，  result.Error  -->  model value required
 	result := db.Table("gorm_users").First(&user)
-	//db.Take(&user)
+
+	//result := db.Table("gorm_users").Take(&user)
 	fmt.Println(result.RowsAffected)
 	fmt.Println(result.Error)
 	fmt.Println(user)
 	fmt.Println(errors.Is(result.Error, gorm.ErrRecordNotFound))
+}
 
+func QueryById(db *gorm.DB) {
+	//var user GORMUser
+	//result := db.First(&user, 10)
+	//SELECT * FROM gorm_users WHERE id = 10;
+
+	//result := db.First(&user, "name = ?", "pob_4")
+	//SELECT * FROM users WHERE name = “pob_4”;
+
+	//var user []map[string]interface{}
+	//result := db.Model(&GORMUser{}).Find(&user, []int{1, 2, 3})
+
+	var user []GORMUser
+	result := db.Find(&user, []int{1, 2, 3})
+	// SELECT * FROM gorm_users WHERE id IN (1,2,3);   user用结构体切片或数组接收
+
+	//var user = GORMUser{ID: 10}
+	//result := db.First(&user)
+
+	//var user GORMUser
+	//result := db.Model(&GORMUser{ID: 10}).First(&user)
+	////SELECT * FROM gorm_users WHERE id = 10;
+
+	fmt.Println(result.RowsAffected)
+	fmt.Println(result.Error)
+	fmt.Println(user)
+	fmt.Println(errors.Is(result.Error, gorm.ErrRecordNotFound))
+}
+func QueryWhere(db *gorm.DB) {
+	var user GORMUser
+	result := db.Not("name = ?", "jinzhu").First(&user)
+	fmt.Println(result.RowsAffected)
+	fmt.Println(result.Error)
+	fmt.Println(user)
+	fmt.Println(errors.Is(result.Error, gorm.ErrRecordNotFound))
 }

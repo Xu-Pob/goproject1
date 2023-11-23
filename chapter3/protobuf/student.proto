@@ -11,7 +11,7 @@ service StudentService{
 message Request{
   string name =1;
 }
-
+//定义服务端响应的数据格式
 message Response{
   int32 uid = 1;
   string username = 2;

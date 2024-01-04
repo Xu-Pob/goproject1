@@ -5,34 +5,51 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 )
 
 type Crawler struct {
 }
 
+//	func Get(url string) (result string, err error) {
+//		resp, err1 := http.Get(url)
+//		if err1 != nil {
+//			err = err1
+//			return
+//		}
+//		defer resp.Body.Close()
+//		//读取网页的body内容
+//		buf := make([]byte, 1024*1024)
+//		for true {
+//			n, err := resp.Body.Read(buf)
+//			if err != nil {
+//				if err == io.EOF {
+//					fmt.Println("文件读取完毕")
+//					break
+//				} else {
+//					fmt.Println("resp.Body.Read err = ", err)
+//					break
+//				}
+//			}
+//			result += string(buf[:n])
+//		}
+//		return
+//	}
 func Get(url string) (result string, err error) {
 	resp, err1 := http.Get(url)
-	if err != nil {
+	if err1 != nil {
 		err = err1
 		return
 	}
 	defer resp.Body.Close()
-	//读取网页的body内容
-	buf := make([]byte, 1024*1024)
-	for true {
-		n, err := resp.Body.Read(buf)
-		if err != nil {
-			if err == io.EOF {
-				fmt.Println("文件读取完毕")
-				break
-			} else {
-				fmt.Println("resp.Body.Read err = ", err)
-				break
-			}
-		}
-		result += string(buf[:n])
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
 	}
+	result = string(body)
+
 	return
 }
 
@@ -46,7 +63,8 @@ func SpiderPage(url string, group *sync.WaitGroup) {
 		return
 	}
 	//把内容写入到文件
-	filename := "page" + url + ".html"
+	res1 := strings.SplitN(url, "://", 2)
+	filename := "page" + res1[1] + ".html"
 	f, err1 := os.Create(filename)
 	if err1 != nil {
 		fmt.Println("os.Create err = ", err1)
